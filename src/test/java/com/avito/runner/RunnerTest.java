@@ -18,7 +18,7 @@ import static com.codeborne.selenide.WebDriverRunner.*;
         strict = true,
         features = "src/test/java/com/avito/features",
         glue = "com/avito/steps",
-        tags = "@all")
+        tags = "@test2")
 
 public class RunnerTest {
     @BeforeClass

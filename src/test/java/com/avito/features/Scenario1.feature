@@ -1,4 +1,4 @@
-@all
+@all @test1
 Feature: Тест авито
 
   @success

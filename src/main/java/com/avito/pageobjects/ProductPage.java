@@ -21,4 +21,9 @@ public class ProductPage {
     @NameOfElement("Цена авто")
     @FindBy(css = ".desktop-ged5cz")
     public SelenideElement price;
+
+    @NameOfElement("Добавить в избранное")
+    @FindBy(css = ".style-header-add-favorite-M7nA2")
+    public SelenideElement addAFavorite;
+
 }

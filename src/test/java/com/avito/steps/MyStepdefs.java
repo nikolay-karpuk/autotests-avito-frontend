@@ -2,10 +2,10 @@ package com.avito.steps;
 
 import com.codeborne.selenide.Selenide;
 import com.avito.pageobjects.*;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 
-import java.time.Duration;
 import java.util.ArrayList;
 
 import static com.codeborne.selenide.Condition.visible;
@@ -17,6 +17,7 @@ public class MyStepdefs {
 
     MainPage mainPage = page(MainPage.class);
     ProductPage productPage = page(ProductPage.class);
+    LoginPage loginPage = page(LoginPage.class);
 
     @Given("^Войти на сайт avito$")
     public void войтиНаСайтAvito() {
@@ -62,8 +63,7 @@ public class MyStepdefs {
         //Нажать на первый элемент
         Selenide.actions().moveToElement(productPage.yaPoint, -150, 50 ).click().build().perform();
         //переключаемся на второе окно
-        ArrayList<String> tabs = new ArrayList<String> (getWebDriver().getWindowHandles());
-        switchTo().window(tabs.get(1));
+        switchToNewTab();
         System.out.println(productPage.price.getText());
     }
 
@@ -72,4 +72,27 @@ public class MyStepdefs {
         System.out.println("Url объявления - " + getWebDriver().getCurrentUrl());
     }
 
+    @Given("^Выполнить вход на сайт с помощью \"([^\"]*)\" и \"([^\"]*)\"$")
+    public void выполнитьВходНаСайтСПомощьюИ(String user, String password){
+        loginPage.loginButton.click();
+        loginPage.log.sendKeys(user);
+        loginPage.pas.sendKeys(password);
+        loginPage.loginSubmit.click();
+        throw new PendingException();
+    }
+
+    @Given("^добавить объявление в избранное$")
+    public void добавитьОбъявлениеВИзбранное() throws InterruptedException {
+        //кликаю на 1е объявление
+        Selenide.actions().moveToElement(productPage.yaPoint, -450, 50 ).click().build().perform();
+        switchToNewTab();
+        productPage.addAFavorite.click();
+        open("https://www.avito.ru/favorites");
+        Thread.sleep(3000); //просто для визуала
+    }
+
+    private void switchToNewTab() {
+        ArrayList<String> tabs = new ArrayList<String> (getWebDriver().getWindowHandles());
+        switchTo().window(tabs.get(1));
+    }
 }
